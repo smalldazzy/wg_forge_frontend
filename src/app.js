@@ -41,8 +41,15 @@ export default (function () {
               bodyRows += '<td>' + row[colName].substr(0,2) +'xxxxxxxxxx'+row[colName].substr(-4)+ '</td>';
             }
           else if (colName=="user_id") {
-              bodyRows += '<td class="user_data">' + row[colName] + '</td>';
-            }
+              //bodyRows += '<td class="user_data">' + row[colName] + '</td>';}
+              for (var i=0;i<users.length;i++){
+                if (users[i].id==row[colName]) {
+                  if (users[i].gender=="Male") {
+                      bodyRows += '<td class="user_data">' + '<a href="#">Mr. '+ users[i].first_name +' '+ users[i].last_name + '</a></td>';
+                  } else if (users[i].gender=="Female") {
+                    bodyRows += '<td class="user_data">' + '<a href="#">Mrs. '+ users[i].first_name +' '+ users[i].last_name +'</a></td>';
+                  } else {bodyRows += '<td class="user_data">' +'Oooops'+ row[colName] + '</td>';}
+              }}}
           else if (colName=="total") {
                 bodyRows += '<td>' + '$'+row[colName] + '</td>';
               }
@@ -51,7 +58,7 @@ export default (function () {
           }
 
         //  bodyRows += '<td>' + t + '</td>';
-        })
+      })
 
         bodyRows += '</tr>';
       });
@@ -74,7 +81,6 @@ export default (function () {
     var time = date + '/' + month + '/' + year + ' ' + hour + ':' + min + ':' + sec ;
     return time;
   }
-  console.log(convert(0));
 
       document.getElementById("app").innerHTML=jsontable(orders);
     // YOUR CODE GOES HERE
