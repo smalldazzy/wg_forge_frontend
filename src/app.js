@@ -11,7 +11,7 @@ export default (function () {
     thead.innerHTML='<th>Transaction ID</th><th>User Info</th><th>Order Date</th><th>Order Amount</th><th>Card Number</th><th>Card Type</th><th>Location</th>';
     var tbody=document.createElement('tbody');
     table.appendChild(tbody);
-    document.getElementById('app').appendChild(table);
+
     for (var i=0;i<orders.length;i++)
     {
       var newRow=tbody.insertRow(i);
@@ -124,25 +124,19 @@ export default (function () {
       var time = date + '/' + month + '/' + year ;
       return time;
     }
-    table.addEventListener('click',hide(event),false);
+    table.addEventListener('click', hide, false);
     function hide (event) {
       var target = event.target;
       // цикл двигается вверх от target к родителям до table
       while (target != table) {
-        console.log('jopa');
-        if (target.getElementsByTagName == 'a') {
-          // нашли элемент, который нас интересует!
-          highlight(target);
+        if (target.tagName == 'A') {
+          console.log(5555);
+          event.target.nextSibling.hidden = !event.target.nextSibling.hidden;
           return;
         }
         target = target.parentNode;
       }
-
-
-      // возможна ситуация, когда клик был вне <td>
-      // если цикл дошёл до table и ничего не нашёл,
-      // то обработчик просто заканчивает работу
-      alert('jopa');
+      console.log('not found');
     }
     // table.onclick = function(event) {
     // if (!event.target.tagName('a')) return;
@@ -150,8 +144,8 @@ export default (function () {
     // event.target.nextSibling.hidden = !event.target.nextSibling.hidden;
     // }
 
-
+    document.getElementById('app').appendChild(table);
     // YOUR CODE GOES HERE
     // next line is for example only
-    document.getElementById("app").innerHTML += "<h1>Hello WG Forge</h1>";
+    //document.getElementById("app").innerHTML += "<h1>Hello WG Forge</h1>";
 }());
