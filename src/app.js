@@ -42,17 +42,23 @@ export default (function () {
                   case 0:
                   for (var n=0;n<users.length;n++){
                     if (users[n].id==orders[i][head[k]]){
-                    p.innerHTML=`Birthday ${convert_d(users[n].birthday)}`;}}
+                      p.innerHTML=`Birthday ${convert_d(users[n].birthday)}`;
+                    }
+                  }
                     break;
                   case 1:
-                    p.innerHTML='<img src="" width="100px">';
+                  for (var n=0;n<users.length;n++){
+                    if (users[n].id==orders[i][head[k]]){
+                      p.innerHTML=`<img src="${users[n].avatar}" width="100px">`;
+                    }
+                  }
                     break;
                   case 2:
                     for (var n=0;n<users.length;n++){
                       if (users[n].id==orders[i][head[k]]){
                         for (var h=0;h<companies.length;h++){
                           if (users[n].company_id==companies[h].id){
-                            p.innerHTML=`Company: ${companies[h].title}`;}
+                            p.innerHTML=`Company: <a href='${companies[h].url}' target='_blank'>${companies[h].title}</a>`;}
                         }
                       }
                     }
@@ -130,13 +136,13 @@ export default (function () {
       // цикл двигается вверх от target к родителям до table
       while (target != table) {
         if (target.tagName == 'A') {
-          console.log(5555);
-          event.target.nextSibling.hidden = !event.target.nextSibling.hidden;
+          console.log(target.nextSibling);
+          target.nextSibling.style.display=='none' ? target.nextSibling.style.display='block' : target.nextSibling.style.display='none';
           return;
         }
         target = target.parentNode;
       }
-      console.log('not found');
+      console.log('missclick');
     }
     // table.onclick = function(event) {
     // if (!event.target.tagName('a')) return;
