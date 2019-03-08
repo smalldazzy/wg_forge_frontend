@@ -31,38 +31,46 @@ export default (function () {
                     td.innerHTML=`<a href="#">Mrs. ${users[n].first_name} ${users[n].last_name}</a>`;
                   } else {td.innerHTML='something went wrong';}
                 }
-               /*for_n otsuda*/
+              }/*for_n otsuda*/
               td.className='user_data';
               var div=document.createElement('div');
               div.className='user-details';
+              div.style.display='none';
               for (var m=0;m<4;m++){
                 var p=document.createElement('p');
                 switch (m) {
                   case 0:
-                    //console.log(users[n].first_name+users[n].last_name);
-                    p.innerHTML=`Birthday ${convert_d(users[n].birthday)}`;
+                  for (var n=0;n<users.length;n++){
+                    if (users[n].id==orders[i][head[k]]){
+                    p.innerHTML=`Birthday ${convert_d(users[n].birthday)}`;}}
                     break;
                   case 1:
                     p.innerHTML='<img src="" width="100px">';
                     break;
                   case 2:
-                    for (var h=0;h<companies.length;h++){
-                      if (users[n].company_id==companies[h].id){
-                        //console.log(users[n].company_id);
-                        //4218
-                       p.innerHTML=`Company: ${companies[h].id}`;
-                        //10
+                    for (var n=0;n<users.length;n++){
+                      if (users[n].id==orders[i][head[k]]){
+                        for (var h=0;h<companies.length;h++){
+                          if (users[n].company_id==companies[h].id){
+                            p.innerHTML=`Company: ${companies[h].title}`;}
+                        }
                       }
                     }
-
                     break;
                   case 3:
-                    p.innerHTML=`Industry: `;
+                  for (var n=0;n<users.length;n++){
+                    if (users[n].id==orders[i][head[k]]){
+                      for (var h=0;h<companies.length;h++){
+                        if (users[n].company_id==companies[h].id){
+                          p.innerHTML=`Industry: ${companies[h].industry}`;}
+                      }
+                    }
+                  }
                     break;
                   default:
 
                 }
-                div.appendChild(p);/*for_n----->*/}
+                div.appendChild(p);/*for_n----->*/
 
               }
               td.appendChild(div);
@@ -116,26 +124,32 @@ export default (function () {
       var time = date + '/' + month + '/' + year ;
       return time;
     }
+    // table.onclick = function(event) {
+    //   var target = event.target;
+    //   // цикл двигается вверх от target к родителям до table
+    //   while (target != table) {
+    //     console.log('jopa');
+    //     if (target.getElementsByTagName == 'a') {
+    //       // нашли элемент, который нас интересует!
+    //       console.log(target.parentNode);
+    //       highlight(target);
+    //       return;
+    //     }
+    //     target = target.parentNode;
+    //   }
 
-    console.log(orders[1][head[5]]);
-      //document.getElementById("app").innerHTML=jsontable(orders);
-      // var table=document.querySelector('table');
-      // table.onclick = function(event) {
-      //   var target = event.target;
-      //
-      //   // цикл двигается вверх от target к родителям до table
-      //   while (target != table) {
-      //     if (target.tagName == 'TD') {
-      //       // нашли элемент, который нас интересует!
-      //       highlight(target);
-      //       return;
-      //     }
-      //     target = target.parentNode;
-      //   }
-      //   // возможна ситуация, когда клик был вне <td>
-      //   // если цикл дошёл до table и ничего не нашёл,
-      //   // то обработчик просто заканчивает работу
-      // }
+
+      // возможна ситуация, когда клик был вне <td>
+      // если цикл дошёл до table и ничего не нашёл,
+      // то обработчик просто заканчивает работу
+    //   alert('jopa');
+    // }
+    table.onclick = function(event) {
+    if (!event.target.tagName('a')) return;
+    console.log('jopa');
+    event.target.nextSibling.hidden = !event.target.nextSibling.hidden;
+    }
+
 
     // YOUR CODE GOES HERE
     // next line is for example only
