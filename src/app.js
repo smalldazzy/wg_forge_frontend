@@ -124,31 +124,31 @@ export default (function () {
       var time = date + '/' + month + '/' + year ;
       return time;
     }
-    // table.onclick = function(event) {
-    //   var target = event.target;
-    //   // цикл двигается вверх от target к родителям до table
-    //   while (target != table) {
-    //     console.log('jopa');
-    //     if (target.getElementsByTagName == 'a') {
-    //       // нашли элемент, который нас интересует!
-    //       console.log(target.parentNode);
-    //       highlight(target);
-    //       return;
-    //     }
-    //     target = target.parentNode;
-    //   }
+    table.addEventListener('click',hide(event),false);
+    function hide (event) {
+      var target = event.target;
+      // цикл двигается вверх от target к родителям до table
+      while (target != table) {
+        console.log('jopa');
+        if (target.getElementsByTagName == 'a') {
+          // нашли элемент, который нас интересует!
+          highlight(target);
+          return;
+        }
+        target = target.parentNode;
+      }
 
 
       // возможна ситуация, когда клик был вне <td>
       // если цикл дошёл до table и ничего не нашёл,
       // то обработчик просто заканчивает работу
-    //   alert('jopa');
-    // }
-    table.onclick = function(event) {
-    if (!event.target.tagName('a')) return;
-    console.log('jopa');
-    event.target.nextSibling.hidden = !event.target.nextSibling.hidden;
+      alert('jopa');
     }
+    // table.onclick = function(event) {
+    // if (!event.target.tagName('a')) return;
+    // console.log('jopa');
+    // event.target.nextSibling.hidden = !event.target.nextSibling.hidden;
+    // }
 
 
     // YOUR CODE GOES HERE
