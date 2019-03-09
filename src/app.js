@@ -136,14 +136,54 @@ export default (function () {
       // цикл двигается вверх от target к родителям до table
       while (target != table) {
         if (target.tagName == 'A') {
-          console.log(target.nextSibling);
+          //console.log(target.nextSibling);
           target.nextSibling.style.display=='none' ? target.nextSibling.style.display='block' : target.nextSibling.style.display='none';
           return;
         }
+        if (target.tagName == 'TH') {
+          // Если TH -- сортируем
+          console.log('poimal');
+          console.log(target.cellIndex);
+          sortGrid(target.cellIndex);
+        }
         target = target.parentNode;
       }
-      console.log('missclick');
+      //console.log('missclick');
     }
+
+    function sortGrid(colNum) {
+      // Составить массив из TR
+      var rowsArray = [].slice.call(tbody.rows);
+      // определить функцию сравнения, в зависимости от типа
+      var compare;
+
+      switch (colNum) {
+        case 4:
+          compare = function(rowA, rowB) {
+            console.log(rowA.cells[colNum].firstChild.innerHTML.substr(4).trim());
+            return rowA.cells[colNum].innerHTML - rowB.cells[colNum].innerHTML;
+          };
+          break;
+          case 1:
+            compare = function(rowA, rowB) {
+              console.log(rowA.cells[colNum].firstChild.innerHTML.substr(4).trim());
+              console.log(rowA.cells[colNum].firstChild.innerHTML.substr(4).trim() > rowB.cells[colNum].firstChild.innerHTML.substr(4).trim());
+              return (rowA.cells[colNum].firstChild.innerHTML.substr(4).trim() > rowB.cells[colNum].firstChild.innerHTML.substr(4).trim());
+            };
+            break;
+      }
+        // сортировать
+        rowsArray.sort(compare);
+        //console.log(rowsArray);
+        // Убрать tbody из большого DOM документа для лучшей производительности
+        table.removeChild(tbody);
+        // добавить результат в нужном порядке в TBODY
+        // они автоматически будут убраны со старых мест и вставлены в правильном порядке
+        for (var i = 0; i < rowsArray.length; i++) {
+          tbody.appendChild(rowsArray[i]);
+        }
+        table.appendChild(tbody);
+      }
     // table.onclick = function(event) {
     // if (!event.target.tagName('a')) return;
     // console.log('jopa');
