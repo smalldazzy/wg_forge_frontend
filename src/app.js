@@ -8,7 +8,7 @@ export default (function () {
     var thead=document.createElement('thead');
     table.appendChild(thead);
     var head =['transaction_id','user_id','created_at','total','card_number','card_type','order_country','order_ip'];
-    thead.innerHTML='<th>Transaction ID</th><th>User Info</th><th>Order Date</th><th>Order Amount</th><th>Card Number</th><th>Card Type</th><th>Location</th>';
+    thead.innerHTML='<th style="cursor:pointer">Transaction ID</th><th style="cursor:pointer">User Info</th><th style="cursor:pointer">Order Date</th><th style="cursor:pointer">Order Amount</th><th>Card Number</th><th style="cursor:pointer">Card Type</th><th style="cursor:pointer">Location</th>';
     var tbody=document.createElement('tbody');
     table.appendChild(tbody);
 
@@ -146,6 +146,11 @@ export default (function () {
           console.log(target.cellIndex);
           sortGrid(target.cellIndex);
         }
+        if (target.tagName == 'SPAN') {
+          // Если TH -- сортируем
+          console.log('spalili');
+          console.log(target);
+        }
         target = target.parentNode;
       }
       //console.log('missclick');
@@ -158,19 +163,58 @@ export default (function () {
       var compare;
 
       switch (colNum) {
-        case 4:
+        case 0:
           compare = function(rowA, rowB) {
-            console.log(rowA.cells[colNum].firstChild.innerHTML.substr(4).trim());
-            return rowA.cells[colNum].innerHTML - rowB.cells[colNum].innerHTML;
+            //console.log(rowA.cells[colNum].innerHTML);
+            if (rowA.cells[colNum].innerHTML.toString() > rowB.cells[colNum].innerHTML.toString()) {
+              return 1;
+            } else return -1;
           };
           break;
           case 1:
             compare = function(rowA, rowB) {
-              console.log(rowA.cells[colNum].firstChild.innerHTML.substr(4).trim());
-              console.log(rowA.cells[colNum].firstChild.innerHTML.substr(4).trim() > rowB.cells[colNum].firstChild.innerHTML.substr(4).trim());
-              return (rowA.cells[colNum].firstChild.innerHTML.substr(4).trim() > rowB.cells[colNum].firstChild.innerHTML.substr(4).trim());
+              // console.log(rowA.cells[colNum].firstChild.innerHTML.substr(4).trim());
+              // console.log(rowA.cells[colNum].firstChild.innerHTML.substr(4).trim() > rowB.cells[colNum].firstChild.innerHTML.substr(4).trim());
+              if (rowA.cells[colNum].firstChild.innerHTML.substr(4).trim() > rowB.cells[colNum].firstChild.innerHTML.substr(4).trim()) {
+                return 1;
+              } else return -1;
             };
             break;
+          case 3:
+            compare = function(rowA, rowB) {
+              // console.log(rowA.cells[colNum].innerHTML.substr(1));
+              if (Number(rowA.cells[colNum].innerHTML.substr(1)) > Number(rowB.cells[colNum].innerHTML.substr(1))) {
+                return 1;
+              } else return -1;
+            };
+            break;
+          case 6:
+            compare = function(rowA, rowB) {
+              // console.log(rowA.cells[colNum].innerHTML);
+              if (rowA.cells[colNum].innerHTML.toString() > rowB.cells[colNum].innerHTML.toString()) {
+                return 1;
+              } else return -1;
+            };
+            break;
+          case 5:
+            compare = function(rowA, rowB) {
+              // console.log(rowA.cells[colNum].innerHTML);
+              if (rowA.cells[colNum].innerHTML > rowB.cells[colNum].innerHTML) {
+                return 1;
+              } else return -1;
+            };
+            break;
+            case 2:
+              compare = function(rowA, rowB) {
+                //console.log(rowA.cells[colNum].innerHTML);
+                //return new Date(rowA.date) - new Date(rowB.date);
+                console.log(Date(rowA.cells[colNum].innerHTML.date) - Date(rowB.cells[colNum].innerHTML.date));
+
+                // if (rowA.cells[colNum].innerHTML > rowB.cells[colNum].innerHTML) {
+                //   return 1;
+                // } else return -1;
+              };
+              break;
       }
         // сортировать
         rowsArray.sort(compare);
@@ -180,9 +224,12 @@ export default (function () {
         // добавить результат в нужном порядке в TBODY
         // они автоматически будут убраны со старых мест и вставлены в правильном порядке
         for (var i = 0; i < rowsArray.length; i++) {
+          // console.log(rowsArray[i]);
           tbody.appendChild(rowsArray[i]);
         }
+        thead.getElementsByTagName('TH')[colNum].innerHTML+='<span>&#8595;</span>';
         table.appendChild(tbody);
+
       }
     // table.onclick = function(event) {
     // if (!event.target.tagName('a')) return;
