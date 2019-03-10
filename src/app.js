@@ -148,16 +148,17 @@ export default (function () {
           console.log(target.cellIndex);
           sortGrid(target.cellIndex);
         }
-        if (target.tagName == 'TH' && target.id=='search') {
-          //console.log(target.nextSibling);
-          myFunction();
-          return;
-        }
+        // if (target.tagName == 'TH' && target.id=='search') {
+        //   //console.log(target.nextSibling);
+        //   myFunction();
+        //   return;
+        // }
         target = target.parentNode;
       }
       //console.log('missclick');
     }
-
+    let search=document.getElementById('search');
+    search.onkeyup=myFunction();
     function sortGrid(colNum) {
       // Составить массив из TR
       var rowsArray = [].slice.call(tbody.rows);
@@ -232,20 +233,6 @@ export default (function () {
         thead.getElementsByTagName('TH')[colNum].innerHTML+='<span>&#8595;</span>';
         table.appendChild(tbody);
 
-      }
-      function findMedian(data) {
-        // extract the .values field and sort the resulting array
-        var m = data.map(function(v) {
-          return v.values;
-        }).sort(function(a, b) {
-          return a - b;
-        });
-        var middle = Math.floor((m.length - 1) / 2); // NB: operator precedence
-        if (m.length % 2) {
-          return m[middle];
-        } else {
-          return (m[middle] + m[middle + 1]) / 2.0;
-        }
       }
       function stat() {
         let tfoot=document.createElement('tfoot');
