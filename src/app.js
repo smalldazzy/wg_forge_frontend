@@ -8,7 +8,8 @@ export default (function () {
     var thead=document.createElement('thead');
     table.appendChild(thead);
     var head =['transaction_id','user_id','created_at','total','card_number','card_type','order_country','order_ip'];
-    thead.innerHTML='<th style="cursor:pointer">Transaction ID</th><th style="cursor:pointer">User Info</th><th style="cursor:pointer">Order Date</th><th style="cursor:pointer">Order Amount</th><th>Card Number</th><th style="cursor:pointer">Card Type</th><th style="cursor:pointer">Location</th>';
+    thead.innerHTML='<tr><th>Search:</th><th><input onkeyup="" type="text" id="search"></th></tr>'+
+    '<tr><th style="cursor:pointer">Transaction ID</th><th style="cursor:pointer">User Info</th><th style="cursor:pointer">Order Date</th><th style="cursor:pointer">Order Amount</th><th>Card Number</th><th style="cursor:pointer">Card Type</th><th style="cursor:pointer">Location</th></tr>';
     var tbody=document.createElement('tbody');
     table.appendChild(tbody);
     let count=0;
@@ -140,11 +141,17 @@ export default (function () {
           target.nextSibling.style.display=='none' ? target.nextSibling.style.display='block' : target.nextSibling.style.display='none';
           return;
         }
-        if (target.tagName == 'TH') {
+        if (target.tagName == 'TH'&& target.innerHTML!='Search:' && target.innerHTML!='<input onkeyup="" type="text" id="search">') {
+          console.log(target.innerHTML);
           // Если TH -- сортируем
           console.log('poimal');
           console.log(target.cellIndex);
           sortGrid(target.cellIndex);
+        }
+        if (target.tagName == 'TH' && target.id=='search') {
+          //console.log(target.nextSibling);
+          myFunction();
+          return;
         }
         target = target.parentNode;
       }
@@ -168,7 +175,7 @@ export default (function () {
           break;
           case 1:
             compare = function(rowA, rowB) {
-              // console.log(rowA.cells[colNum].firstChild.innerHTML.substr(4).trim());
+              //console.log(rowA.cells[colNum].firstChild.innerHTML.substr(4).trim());
               // console.log(rowA.cells[colNum].firstChild.innerHTML.substr(4).trim() > rowB.cells[colNum].firstChild.innerHTML.substr(4).trim());
               if (rowA.cells[colNum].firstChild.innerHTML.substr(4).trim() > rowB.cells[colNum].firstChild.innerHTML.substr(4).trim()) {
                 return 1;
@@ -241,10 +248,11 @@ export default (function () {
         }
       }
       function stat() {
+        let tfoot=document.createElement('tfoot');
         for (let i=0;i<5;i++){
           switch (i){
             case 0:{
-              let rowStats=tbody.insertRow(count+1);
+              let rowStats=tfoot.insertRow(0);//count+1
               let td=document.createElement('td');
               td.innerHTML='Orders Count';
               rowStats.appendChild(td);
@@ -254,7 +262,7 @@ export default (function () {
               }
               break;
             case 1:{
-              let rowStats=tbody.insertRow(count+2);
+              let rowStats=tfoot.insertRow(1);//count+2
               let td=document.createElement('td');
               td.innerHTML='Orders Total';
               rowStats.appendChild(td);
@@ -269,7 +277,7 @@ export default (function () {
               }
               break;
             case 2:{
-              let rowStats=tbody.insertRow(count+3);
+              let rowStats=tfoot.insertRow(2);//count+3
               let td=document.createElement('td');
               td.innerHTML='Median Value';
               rowStats.appendChild(td);
@@ -287,7 +295,7 @@ export default (function () {
               break;
             }
             case 3:{
-              let rowStats=tbody.insertRow(count+4);
+              let rowStats=tfoot.insertRow(3);//count+4
               let td=document.createElement('td');
               td.innerHTML='Average Check';
               rowStats.appendChild(td);
@@ -302,8 +310,8 @@ export default (function () {
               }
               break;
             case 4:{
-              let rowStats1=tbody.insertRow(count+5);
-              let rowStats2=tbody.insertRow(count+6);
+              let rowStats1=tfoot.insertRow(4);//count+5
+              let rowStats2=tfoot.insertRow(5);//count+6
               let td1=document.createElement('td');
               td1.innerHTML='Average Check (Female)';
               rowStats1.appendChild(td1);
@@ -336,6 +344,27 @@ export default (function () {
               rowStats2.appendChild(td4);
               }
               break;
+          }
+        }
+        table.appendChild(tfoot);
+      }
+      function myFunction() {
+        // Declare variables
+        let input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("search");
+        filter = input.value.toUpperCase();
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[0];
+          if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+            } else {
+              tr[i].style.display = "none";
+            }
           }
         }
       }
